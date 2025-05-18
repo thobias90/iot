@@ -1,7 +1,7 @@
 idf_component_register(
   SRCS 
     "iot_main.c" 
-    "wifi/wifi_connect.c"
+    "wifi/wifi_task.c"
   INCLUDE_DIRS 
     "wifi"
   PRIV_REQUIRES 
