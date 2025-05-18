@@ -1,5 +1,5 @@
-#ifndef WIFI_CONNECT_H
-#define WIFI_CONNECT_H
+#ifndef WIFI_TASK_H
+#define WIFI_TASK_H
 
 // Enter the Wi-Fi credentials here
 #define WIFI_SSID "ssid"
@@ -7,4 +7,4 @@
 
 void wifi_task(void *param);
 
-#endif // WIFI_CONNECT_H
+#endif // WIFI_TASK_H
