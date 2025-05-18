@@ -2,8 +2,10 @@ idf_component_register(
   SRCS 
     "iot_main.c" 
     "wifi/wifi_task.c"
+    "mqtt/mqtt_task.c"
   INCLUDE_DIRS 
     "wifi"
+    "mqtt"
   PRIV_REQUIRES 
     esp_netif 
     driver 
