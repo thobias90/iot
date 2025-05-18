@@ -4,6 +4,7 @@ idf_component_register(
     "wifi/wifi_task.c"
     "mqtt/mqtt_task.c"
   INCLUDE_DIRS 
+    "."  
     "wifi"
     "mqtt"
   PRIV_REQUIRES 
@@ -11,4 +12,5 @@ idf_component_register(
     driver 
     esp_wifi
     nvs_flash
+    mqtt
 )

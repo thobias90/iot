@@ -1,11 +1,14 @@
-#include <stdio.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "wifi_task.h"
 #include "mqtt_task.h"
+#include "synch_events.h"
+#include "wifi_task.h"
+
+EventGroupHandle_t s_event_group = NULL;
 
 void app_main(void) {
-  printf("Hello world!\n");
+  s_event_group = xEventGroupCreate();
+
   xTaskCreate(wifi_task, "wifi_task", 4096, NULL, 5, NULL);
   xTaskCreate(mqtt_task, "mqtt_task", 4096, NULL, 5, NULL);
 }
