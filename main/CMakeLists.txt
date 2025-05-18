@@ -1,0 +1,12 @@
+idf_component_register(
+  SRCS 
+    "iot_main.c" 
+    "wifi/wifi_connect.c"
+  INCLUDE_DIRS 
+    "wifi"
+  PRIV_REQUIRES 
+    esp_netif 
+    driver 
+    esp_wifi
+    nvs_flash
+)
