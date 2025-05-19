@@ -6,6 +6,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
 #include "freertos/task.h"
+#include "shared.h"
 
 #define ESP_INTR_FLAG_DEFAULT 0
 #define DEBOUNCE_TIME_US 20000
@@ -65,7 +66,8 @@ void gpio_task(void* param) {
   ESP_LOGI(TAG, "GPIO Task Started..");
 
   uint32_t io_num;
-  bool led_state = false;
+  int led_state = 0;
+  int led_request;
 
   timer_init();
   gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
@@ -73,11 +75,20 @@ void gpio_task(void* param) {
   gpio_interrupt_config();
 
   while (1) {
-    if (xQueueReceive(gpio_evt_queue, &io_num, portMAX_DELAY)) {
+    if (xQueueReceive(gpio_evt_queue, &io_num, 0)) {
       if (io_num == GPIO_INPUT) {
         led_state = !led_state;
         gpio_set_level(GPIO_OUTPUT, led_state);
+        xQueueSend(s_led_events, &led_state, 0);
       }
     }
+    if (xQueueReceive(s_led_requests, &led_request, 0)) {
+      if (led_request) {
+        gpio_set_level(GPIO_OUTPUT, 1);
+      } else {
+        gpio_set_level(GPIO_OUTPUT, 0);
+      }
+    }
+    vTaskDelay(pdMS_TO_TICKS(100));
   }
 }

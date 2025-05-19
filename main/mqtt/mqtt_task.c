@@ -3,6 +3,7 @@
 #include "esp_log.h"
 #include "mqtt_client.h"
 #include "events.h"
+#include "shared.h"
 
 static const char* TAG = "MQTT";
 static esp_mqtt_client_handle_t mqtt_client = NULL;
@@ -11,8 +12,14 @@ static void mqtt_event_data(char* topic, int topic_len, char* data, int data_len
   ESP_LOGI(TAG, "MQTT_EVENT_DATA");
   printf("TOPIC=%.*s\r\n", topic_len, topic);
   printf("DATA=%.*s\r\n", data_len, data);
-  if (data) {
-    esp_mqtt_client_publish(mqtt_client, "/button-state", "{\"on\": true}", 12, 0, 0);
+  int led_request;
+  if (*data == '1') {
+    // esp_mqtt_client_publish(mqtt_client, "/button-state", "{\"on\": true}", 12, 0, 0);
+    led_request = 1;
+    xQueueSend(s_led_requests, &led_request, 0);
+  } else {
+    led_request = 0;
+    xQueueSend(s_led_requests, &led_request, 0);
   }
 }
 
@@ -81,7 +88,16 @@ void mqtt_task(void* param) {
   }
   mqtt_app_start();
 
+  int led_state;
+
   while (1) {
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    if (xQueueReceive(s_led_events, &led_state, portMAX_DELAY)) {
+      ESP_LOGI(TAG, "LED state: %d", led_state);
+      if (led_state) {
+        esp_mqtt_client_publish(mqtt_client, "/button-state", "{\"on\": true}", 12, 0, 0);
+      } else {
+        esp_mqtt_client_publish(mqtt_client, "/button-state", "{\"on\": false}", 13, 0, 0);
+      }
+    }
   }
 }
