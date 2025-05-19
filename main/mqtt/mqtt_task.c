@@ -2,7 +2,7 @@
 
 #include "esp_log.h"
 #include "mqtt_client.h"
-#include "synch_events.h"
+#include "events.h"
 
 static const char* TAG = "MQTT";
 static esp_mqtt_client_handle_t mqtt_client = NULL;

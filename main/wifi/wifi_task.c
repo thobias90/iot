@@ -4,7 +4,7 @@
 #include "esp_event.h"
 #include "esp_log.h"
 #include "esp_wifi.h"
-#include "synch_events.h"
+#include "events.h"
 #include "freertos/FreeRTOS.h"
 #include "nvs_flash.h"
 

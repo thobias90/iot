@@ -1,5 +1,5 @@
-#ifndef SYNCH_EVENTS_H
-#define SYNCH_EVENTS_H
+#ifndef EVENTS_H
+#define EVENTS_H
 
 #include "freertos/event_groups.h"
 
@@ -9,4 +9,4 @@
 
 extern EventGroupHandle_t s_event_group;
 
-#endif  // SYNCH_EVENTS_H
+#endif  // EVENTS_H
