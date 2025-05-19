@@ -8,7 +8,7 @@
 #include "freertos/task.h"
 
 #define ESP_INTR_FLAG_DEFAULT 0
-#define DEBOUNCE_TIME_US 50000
+#define DEBOUNCE_TIME_US 20000
 
 static QueueHandle_t gpio_evt_queue = NULL;
 static esp_timer_handle_t debounce_timer = NULL;
@@ -25,7 +25,9 @@ static void IRAM_ATTR gpio_isr_handler(void* arg) {
 
 static void IRAM_ATTR debounce_timer_callback(void* arg) {
   uint32_t gpio_num = (uint32_t)arg;
-  xQueueSendFromISR(gpio_evt_queue, &gpio_num, NULL);
+  if (gpio_get_level(gpio_num) == 1) {
+    xQueueSendFromISR(gpio_evt_queue, &gpio_num, NULL);
+  }
   is_debouncing = false;
 }
 
