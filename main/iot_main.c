@@ -3,6 +3,7 @@
 #include "mqtt_task.h"
 #include "synch_events.h"
 #include "wifi_task.h"
+#include "gpio_task.h"
 
 EventGroupHandle_t s_event_group = NULL;
 
@@ -11,4 +12,5 @@ void app_main(void) {
 
   xTaskCreate(wifi_task, "wifi_task", 4096, NULL, 5, NULL);
   xTaskCreate(mqtt_task, "mqtt_task", 4096, NULL, 5, NULL);
+  xTaskCreate(gpio_task, "gpio_task", 4096, NULL, 5, NULL);
 }

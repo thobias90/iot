@@ -3,14 +3,17 @@ idf_component_register(
     "iot_main.c" 
     "wifi/wifi_task.c"
     "mqtt/mqtt_task.c"
+    "gpio/gpio_task.c"
   INCLUDE_DIRS 
     "."  
     "wifi"
     "mqtt"
+    "gpio"
   PRIV_REQUIRES 
     esp_netif 
     driver 
     esp_wifi
     nvs_flash
     mqtt
+    esp_driver_gpio
 )
