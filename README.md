@@ -14,6 +14,13 @@ Select the instructions depending on Espressif chip installed on your developmen
 
 - [ESP32 Getting Started Guide](https://docs.espressif.com/projects/esp-idf/en/stable/get-started/index.html)
 
+## MQTT Broker
+
+HiveMQ can be used as MQTT Broker, run the cmd bellow:
+```
+docker run -p 8081:8080 -p 1883:1883 hivemq/hivemq4
+```
+
 
 ## Project folder contents
 
