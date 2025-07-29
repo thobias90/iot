@@ -32,7 +32,7 @@ static void mqtt_event_handler(void* handler_args, esp_event_base_t base, int32_
   switch ((esp_mqtt_event_id_t)event_id) {
     case MQTT_EVENT_CONNECTED:
       ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
-      msg_id = esp_mqtt_client_subscribe(client, "/topic/qos0", 0);
+      msg_id = esp_mqtt_client_subscribe(client, "/led/cmd", 0);
       ESP_LOGI(TAG, "sent subscribe successful, msg_id=%d", msg_id);
       break;
     case MQTT_EVENT_DISCONNECTED:
@@ -62,7 +62,6 @@ static void mqtt_event_handler(void* handler_args, esp_event_base_t base, int32_
       break;
   }
 }
-
 static void mqtt_app_start(void) {
   const esp_mqtt_client_config_t mqtt_cfg = {
       .broker.address.uri = BROKER_URI,
@@ -94,9 +93,9 @@ void mqtt_task(void* param) {
     if (xQueueReceive(s_led_events, &led_state, portMAX_DELAY)) {
       ESP_LOGI(TAG, "LED state: %d", led_state);
       if (led_state) {
-        esp_mqtt_client_publish(mqtt_client, "/button-state", "{\"on\": true}", 12, 0, 0);
+        esp_mqtt_client_publish(mqtt_client, "/led/state", "1", 1, 0, 0);
       } else {
-        esp_mqtt_client_publish(mqtt_client, "/button-state", "{\"on\": false}", 13, 0, 0);
+        esp_mqtt_client_publish(mqtt_client, "/led/state", "0", 1, 0, 0);
       }
     }
   }
