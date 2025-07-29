@@ -85,8 +85,12 @@ void gpio_task(void* param) {
     if (xQueueReceive(s_led_requests, &led_request, 0)) {
       if (led_request) {
         gpio_set_level(GPIO_OUTPUT, 1);
+        led_state = 1;
+        xQueueSend(s_led_events, &led_state, 0);
       } else {
         gpio_set_level(GPIO_OUTPUT, 0);
+        led_state = 0;
+        xQueueSend(s_led_events, &led_state, 0);
       }
     }
     vTaskDelay(pdMS_TO_TICKS(100));
